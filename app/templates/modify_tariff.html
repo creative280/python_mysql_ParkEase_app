@@ -1,0 +1,78 @@
+<!-- modify_tariff.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Tariff</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Modify Tariff</h2>
+
+        <!-- Lista de tarifas -->
+        {% if tariff_types %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tariff ID</th>
+                        <th>Name</th>
+                        <th>Rate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tariff_type in tariff_types %}
+                        <tr>
+                            <td>{{ tariff_type.id }}</td>
+                            <td>{{ tariff_type.name }}</td>
+                            <td>{{ tariff_type.rate }}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary" onclick="editTariff('{{ tariff_type.id }}', '{{ tariff_type.rate }}')">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No tariff types available.</p>
+        {% endif %}
+
+        <!-- Formulario de edición -->
+        <form method="post" style="display:none;" id="editForm">
+            <!-- Tariff ID -->
+            <div class="form-group">
+                <label for="tariff_id">Tariff ID:</label>
+                <input type="number" class="form-control" id="tariff_id" name="tariff_id" readonly>
+            </div>
+
+            <!-- New Rate -->
+            <div class="form-group">
+                <label for="new_rate">New Rate:</label>
+                <input type="text" class="form-control" id="new_rate" name="new_rate" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Script para mostrar el formulario de edición -->
+    <script>
+        function editTariff(tariffId, currentRate) {
+            // Mostrar el formulario de edición
+            document.getElementById('editForm').style.display = 'block';
+
+            // Llenar el formulario con los datos actuales
+            document.getElementById('tariff_id').value = tariffId;
+            document.getElementById('new_rate').value = currentRate;
+        }
+    </script>
+</body>
+</html>

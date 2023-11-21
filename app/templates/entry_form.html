@@ -1,0 +1,51 @@
+<!-- entry_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Entry Form</h2>
+        {% if message %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endif %}
+        <form method="post">
+            <!-- License Plate -->
+            <div class="form-group">
+                <label for="license_plate">License Plate:</label>
+                <input type="text" class="form-control" id="license_plate" name="license_plate" required>
+            </div>
+
+            <!-- Vehicle Type -->
+            <div class="form-group">
+                <label for="vehicle_type">Vehicle Type:</label>
+                <select class="form-control" id="vehicle_type" name="vehicle_type" required>
+                    <option value="car">Car</option>
+                    <option value="motorcycle">Motorcycle</option>
+                </select>
+            </div>
+
+            <!-- Tariff Type -->
+            <div class="form-group">
+                <label for="tariff_type">Tariff Type:</label>
+                <select class="form-control" id="tariff_type" name="tariff_type" required>
+                    {% for tariff_type in tariff_types %}
+                        <option value="{{ tariff_type.id }}">{{ tariff_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

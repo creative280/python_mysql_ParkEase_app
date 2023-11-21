@@ -1,0 +1,104 @@
+<!-- exit_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exit Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Exit Form</h2>
+
+        <div class="row">
+            <!-- Parte izquierda: Lista de vehículos -->
+            <div class="col-md-6">
+                <h4>Vehicles</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>License Plate</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vehicle in vehicles %}
+                            <tr>
+                                <td>{{ vehicle.license_plate }}</td>
+                                <td>
+                                    {% if vehicle.transactions[-1].status == 'PENDING' %}
+                                        <span class="badge badge-warning">Pending</span>
+                                    {% elif vehicle.transactions[-1].status == 'PAID' %}
+                                        <span class="badge badge-success">Paid</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" onclick="showDetails('{{ vehicle.id }}')">Details</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Parte derecha: Detalles del vehículo -->
+            <div class="col-md-6">
+                {% if selected_transaction %}
+                    <h4>Vehicle Details</h4>
+                    <p>License Plate: {{ selected_transaction.vehicle.license_plate }}</p>
+                    <p>Entry Time: {{ selected_transaction.entry_time }}</p>
+                    <p>Exit Time: {{ selected_transaction.exit_time }}</p>
+                    <p>Tariff Type: {{ selected_transaction.tariff_type.name }}</p>
+                    <p>Tariff Rate: ${{ selected_transaction.tariff_type.rate }}</p>
+                    <p>Total Amount: ${{ selected_transaction.total_amount }}</p>
+                    <p>Vehicle ID: {{ selected_transaction.vehicle.id }}</p>
+
+                    {% if selected_transaction.status == 'PENDING' %}
+                        <button class="btn btn-success" onclick="pay('{{ selected_transaction.id }}')">Pay</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+   
+<!-- Script para mostrar detalles y procesar el pago -->
+<script>
+    function showDetails(vehicleId) {
+        // Hacer una solicitud AJAX para obtener los detalles del vehículo
+        // Actualizar selected_transaction con los datos recibidos
+        // Luego, mostrar la sección de detalles
+        // Puedes adaptar este script según tu estructura y ruta de la aplicación
+        // Este es solo un ejemplo básico
+        $.ajax({
+            url: '/exit/json/' + vehicleId,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                selected_transaction = data;
+                // Mostrar la sección de detalles
+                document.getElementById('details').style.display = 'block';
+            },
+            error: function () {
+                alert('Error fetching vehicle details');
+            }
+        });
+    }
+
+    function pay(transactionId) {
+        // Realizar lógica para procesar el pago, por ejemplo, enviar una solicitud al servidor
+        // y actualizar el estado del vehículo a 'PAID'.
+        alert('Payment processed successfully!');
+    }
+</script>
+</body>
+</html>
